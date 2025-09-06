@@ -1,40 +1,62 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import connectDB from "./Config/db.js";
+'use strict';
+module.exports = balanced;
+function balanced(a, b, str) {
+  if (a instanceof RegExp) a = maybeMatch(a, str);
+  if (b instanceof RegExp) b = maybeMatch(b, str);
 
-import authRoutes from "./Routes/auth.js";
-import productRoutes from "./Routes/Product.js";
-import cartRoutes from "./Routes/Cart.js";
-import { errorHandler } from "./Middleware/errorMiddleware.js";
+  var r = range(a, b, str);
 
+  return r && {
+    start: r[0],
+    end: r[1],
+    pre: str.slice(0, r[0]),
+    body: str.slice(r[0] + a.length, r[1]),
+    post: str.slice(r[1] + b.length)
+  };
+}
 
+function maybeMatch(reg, str) {
+  var m = str.match(reg);
+  return m ? m[0] : null;
+}
 
+balanced.range = range;
+function range(a, b, str) {
+  var begs, beg, left, right, result;
+  var ai = str.indexOf(a);
+  var bi = str.indexOf(b, ai + 1);
+  var i = ai;
 
+  if (ai >= 0 && bi > 0) {
+    if(a===b) {
+      return [ai, bi];
+    }
+    begs = [];
+    left = str.length;
 
+    while (i >= 0 && !result) {
+      if (i == ai) {
+        begs.push(i);
+        ai = str.indexOf(a, i + 1);
+      } else if (begs.length == 1) {
+        result = [ begs.pop(), bi ];
+      } else {
+        beg = begs.pop();
+        if (beg < left) {
+          left = beg;
+          right = bi;
+        }
 
-dotenv.config();
-connectDB();
+        bi = str.indexOf(b, i + 1);
+      }
 
-const app = express();
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+      i = ai < bi && ai >= 0 ? ai : bi;
+    }
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-app.use(express.json());
-app.use(cookieParser());
+    if (begs.length) {
+      result = [ left, right ];
+    }
+  }
 
-app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/cart", cartRoutes);
-app.use(errorHandler);
-
-
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  return result;
+}
