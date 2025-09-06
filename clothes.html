@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Clothes</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f0f0; }
+    .header { 
+      background:#40916c; 
+      color:white; 
+      padding:10px 20px; 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+    }
+    .header h1 { margin:0; cursor:pointer; }
+    .home-btn {
+      background:#d4fc79; 
+      color:#1b4332; 
+      border:none; 
+      padding:8px 14px; 
+      border-radius:5px; 
+      cursor:pointer; 
+      font-weight:bold; 
+      transition:0.3s;
+    }
+    .home-btn:hover { background:#b7f46a; }
+
+    h2 { text-align:center; margin:20px; }
+
+    /* Stack products vertically */
+    .product-grid { display:flex; flex-direction:column; gap:20px; padding:20px; max-width:600px; margin:0 auto; }
+
+    .product-card { background:white; padding:15px; border-radius:10px; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.1); transition:0.2s; }
+    .product-card:hover { transform:scale(1.02); }
+    
+    .product-card img {
+      width: 100%;
+      height: auto;          
+      max-height: 220px;     
+      object-fit: contain;   
+      border-radius: 8px;
+      background: #f0f0f0;   
+    }
+
+    .product-card h3 { margin:10px 0 5px; }
+    .product-card p { color:#2d6a4f; font-weight:bold; margin-bottom:10px; font-size:18px; }
+
+    .product-card button {
+      background:#40916c; 
+      color:white; 
+      border:none; 
+      padding:8px 12px; 
+      border-radius:5px; 
+      cursor:pointer; 
+      margin:5px;
+      transition:0.2s;
+      width:48%;
+    }
+    .product-card button:hover { background:#2d6a4f; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1 onclick="window.location.href='index.html'">EcoFinds</h1>
+    <button class="home-btn" onclick="window.location.href='home.html'">Home</button>
+  </div>
+
+  <h2>Eco-Friendly Clothes</h2>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="tshirt1.webp" alt="Eco Shirt">
+      <h3>Eco Shirt</h3>
+      <p>₹1,500</p>
+      <button onclick="goToDetails(1)">View Details</button>
+      <button onclick="addToCart({id:1, name:'Eco Shirt', price:1500, image:'tshirt1.webp'})">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+      <img src="pant3.jpeg" alt="Eco Pants">
+      <h3>Eco Pants</h3>
+      <p>₹2,200</p>
+      <button onclick="goToDetails(2)">View Details</button>
+      <button onclick="addToCart({id:2, name:'Eco Pants', price:2200, image:'pant3.jpeg'})">Add to Cart</button>
+    </div>
+  </div>
+
+  <script>
+    function goToDetails(id) {
+      window.location.href = "productclothes.html?id=" + id;
+    }
+  </script>
+
+  <!-- cart.js manages addToCart + cart count -->
+  <script src="cart.js"></script>
+
+</body>
+</html>

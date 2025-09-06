@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Furniture Product Details</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f0f0; }
+    .header { background:#40916c; color:white; padding:10px 20px; text-align:center; }
+    .product-details { max-width:600px; margin:20px auto; background:white; padding:20px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+    
+    .product-main-img {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #f0f0f0;
+    }
+
+    .thumbnail-container { display:flex; gap:10px; margin-bottom:15px; justify-content:center; }
+    .thumbnail-container img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius:5px;
+      cursor:pointer;
+      border:2px solid transparent;
+      transition:0.2s;
+    }
+    .thumbnail-container img:hover, .thumbnail-container img.active { border:2px solid #40916c; }
+
+    h2, p { margin:10px 0; }
+    button {
+      background:#40916c; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; margin:5px;
+      transition:0.2s;
+    }
+    button:hover { background:#2d6a4f; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>EcoFinds</h1>
+  </div>
+
+  <div class="product-details" id="productDetails"></div>
+
+  <script>
+    const products = {
+      1: {
+        name: "Eco Chair",
+        price: "₹3,500",
+        images: ["chair1.jpeg","chair3.jpeg", "char2.jpeg"],
+        description: "A comfortable chair made from sustainable wood and recycled materials."
+      },
+      2: {
+        name: "Eco Table",
+        price: "₹7,800",
+        images: ["table1.jpeg", "table2.jpeg"],
+        description: "Elegant and durable table made with eco-friendly processes and materials."
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const product = products[id];
+    const container = document.getElementById("productDetails");
+
+    if(product){
+      container.innerHTML = `
+        <img src="${product.images[0]}" alt="${product.name}" class="product-main-img" id="mainImage">
+        <div class="thumbnail-container" id="thumbnails">
+          ${product.images.map((img, index) => `<img src="${img}" class="${index===0?'active':''}" onclick="changeImage('${img}', this)">`).join('')}
+        </div>
+        <h2>${product.name}</h2>
+        <p><strong>Price:</strong> ${product.price}</p>
+        <p>${product.description}</p>
+        <button onclick="addToCart(${id})">Add to Cart</button>
+        <button onclick="goBack()">Back</button>
+      `;
+    } else {
+      container.innerHTML = "<p>Product not found.</p>";
+    }
+
+    function changeImage(src, thumb) {
+      document.getElementById('mainImage').src = src;
+      document.querySelectorAll('.thumbnail-container img').forEach(img => img.classList.remove('active'));
+      thumb.classList.add('active');
+    }
+
+    function addToCart(id) {
+      alert("Product " + id + " added to cart!");
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+
+</body>
+</html>

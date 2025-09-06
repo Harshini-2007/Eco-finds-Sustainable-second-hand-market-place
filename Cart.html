@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Cart</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:20px; background:#f0f0f0; }
+    h1 { text-align:center; color:#2d6a4f; }
+
+    .cart-container { max-width:700px; margin:20px auto; background:white; padding:20px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+    .cart-item { display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #ccc; }
+    .cart-item:last-child { border-bottom:none; }
+    .cart-item img { width:80px; height:80px; object-fit:contain; border-radius:8px; }
+    .cart-details { flex:1; margin-left:15px; }
+    .cart-details h3 { margin:0; }
+    .cart-details p { margin:5px 0; color:#2d6a4f; font-weight:bold; }
+    .cart-details input { width:50px; padding:4px; margin-top:5px; }
+
+    .remove-btn { background:#d9534f; color:white; border:none; padding:6px 10px; border-radius:5px; cursor:pointer; }
+    .remove-btn:hover { background:#c9302c; }
+
+    .total { text-align:right; margin-top:20px; font-size:18px; font-weight:bold; }
+    .cart-actions { text-align:center; margin-top:20px; }
+    .cart-actions button { background:#40916c; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; margin:5px; transition:0.2s; }
+    .cart-actions button:hover { background:#2d6a4f; }
+
+    .purchases-container { max-width:700px; margin:20px auto; background:white; padding:15px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+
+  <h1>My Cart</h1>
+  <div class="cart-container" id="cartContainer"></div>
+  <div class="total" id="totalPrice">Total: ₹0</div>
+
+  <div class="cart-actions">
+    <button onclick="checkout()">Proceed to Payment</button>
+    <button onclick="viewPreviousPurchases()">View Previous Purchases</button>
+    <button onclick="goHome()">Back to Home</button>
+  </div>
+
+  <div class="purchases-container" id="previousPurchases" style="display:none;">
+    <h2>Previous Purchases</h2>
+    <ul id="purchaseList"></ul>
+  </div>
+
+  <script src="cart.js"></script>
+  <script>
+    function refreshCart() {
+      displayCart("cartContainer");
+      const total = getCartTotal();
+      document.getElementById("totalPrice").innerText = "Total: ₹" + total;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      refreshCart();
+    });
+
+    function checkout() {
+      const cart = getCart();
+      if(cart.length === 0){
+        alert("Your cart is empty!");
+        return;
+      }
+
+      let previous = JSON.parse(localStorage.getItem('previousPurchases')) || [];
+      previous.push({
+        date: new Date().toLocaleString(),
+        items: cart
+      });
+      localStorage.setItem('previousPurchases', JSON.stringify(previous));
+
+      localStorage.removeItem('cart');
+      alert("Payment successful! Thank you for your purchase.");
+      refreshCart();
+    }
+
+    function viewPreviousPurchases() {
+      const container = document.getElementById('previousPurchases');
+      const list = document.getElementById('purchaseList');
+      const previous = JSON.parse(localStorage.getItem('previousPurchases')) || [];
+
+      if(previous.length === 0){
+        list.innerHTML = "<li>No previous purchases found.</li>";
+      } else {
+        list.innerHTML = previous.map(p => `
+          <li style="margin-bottom:15px; border-bottom:1px solid #ccc; padding-bottom:10px;">
+            <strong>Purchase Date:</strong> ${p.date}<br>
+            ${p.items.map(i => `${i.name} x ${i.quantity} (₹${i.price})`).join("<br>")}
+          </li>
+        `).join('');
+      }
+      container.style.display = "block";
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function goHome() {
+      window.location.href = "home.html";
+    }
+  </script>
+
+</body>
+</html>

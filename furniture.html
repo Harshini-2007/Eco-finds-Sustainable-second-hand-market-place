@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Furniture</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f0f0; }
+
+    .header { 
+      background:#40916c; 
+      color:white; 
+      padding:10px 20px; 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+    }
+    .header h1 { margin:0; cursor:pointer; }
+
+    .home-btn {
+      background:#d4fc79; 
+      color:#1b4332; 
+      border:none; 
+      padding:8px 14px; 
+      border-radius:5px; 
+      cursor:pointer; 
+      font-weight:bold; 
+      transition:0.3s;
+    }
+    .home-btn:hover { background:#b7f46a; }
+
+    h2 { text-align:center; margin:20px; }
+
+    .product-grid { display:flex; flex-direction:column; gap:20px; padding:20px; max-width:600px; margin:0 auto; }
+
+    .product-card { background:white; padding:15px; border-radius:10px; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.1); transition:0.2s; }
+    .product-card:hover { transform:scale(1.02); }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      max-height: 220px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #f0f0f0;
+    }
+
+    .product-card h3 { margin:10px 0 5px; }
+    .product-card p { color:#2d6a4f; font-weight:bold; margin-bottom:10px; font-size:18px; }
+
+    .product-card button {
+      background:#40916c; 
+      color:white; 
+      border:none; 
+      padding:8px 12px; 
+      border-radius:5px; 
+      cursor:pointer; 
+      margin:5px;
+      transition:0.2s;
+      width:48%;
+    }
+    .product-card button:hover { background:#2d6a4f; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1 onclick="window.location.href='home.html'">EcoFinds</h1>
+    <button class="home-btn" onclick="window.location.href='cart.html'">Cart (<span id="cart-count">0</span>)</button>
+  </div>
+
+  <h2>Eco-Friendly Furniture</h2>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="chair1.jpeg" alt="Eco Chair">
+      <h3>Eco Chair</h3>
+      <p>3500</p>
+      <button onclick="viewDetails(1)">View Details</button>
+      <button onclick="addToCartFromPage(1, 'Eco Chair', 'chair1.jpeg', 3500)">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+      <img src="table1.jpeg" alt="Eco Table">
+      <h3>Eco Table</h3>
+      <p>7800</p>
+      <button onclick="viewDetails(2)">View Details</button>
+      <button onclick="addToCartFromPage(2, 'Eco Table', 'table1.jpeg', 7800)">Add to Cart</button>
+    </div>
+  </div>
+
+  <script src="cart.js"></script>
+  <script>
+    function viewDetails(id) {
+      alert("You clicked on product " + id + ". Implement product detail page if needed.");
+    }
+
+    function addToCartFromPage(id, name, image, price) {
+      const product = { id, name, image, price };
+      addToCart(product);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateCartCount();
+    });
+  </script>
+</body>
+</html>

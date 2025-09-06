@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoFinds Shop</title>
+<style>
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f0f0; }
+  a { text-decoration:none; color:inherit; }
+
+  /* Header */
+  .header { display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:#40916c; color:white; }
+  .header-left { display:flex; align-items:center; cursor:pointer; }
+  .header-left img.logo { width:50px; height:auto; margin-right:10px; }
+  .header-left h1 { margin:0; font-size:24px; }
+
+  .cart-btn { background:#d4fc79; padding:8px 12px; border:none; border-radius:5px; cursor:pointer; }
+
+  /* Home */
+  .hero-eco { text-align:center; padding:30px 16px; background:linear-gradient(to bottom,#d4fc79,#96e6a1); }
+
+  /* Search bar */
+  .search-bar { margin:10px auto 20px; display:flex; justify-content:center; gap:10px; }
+  .search-bar input { width:60%; padding:10px; border-radius:5px; border:1px solid #ccc; }
+  .search-bar button { padding:10px 20px; background:#2d6a4f; color:white; border:none; border-radius:5px; cursor:pointer; }
+  .search-bar button:hover { background:#1b4332; }
+
+  /* Slider (Trending) */
+  .slider { width:90%; max-width:1000px; height:350px; overflow:hidden; margin:20px auto; border-radius:15px; position:relative; box-shadow:0 5px 15px rgba(0,0,0,0.2); }
+  .slides { display:flex; transition:transform 1s ease-in-out; }
+  .slide { width:100%; height:350px; position:relative; flex-shrink:0; }
+  .slide img { width:100%; height:100%; object-fit:cover; border-radius:15px; }
+  .slide-title { position:absolute; bottom:20px; left:20px; background:rgba(0,0,0,0.5); color:white; padding:10px 15px; border-radius:8px; font-size:18px; }
+  .arrow { position:absolute; top:50%; transform:translateY(-50%); font-size:30px; background:rgba(0,0,0,0.3); color:white; padding:5px 10px; border-radius:50%; cursor:pointer; user-select:none; transition:0.3s; }
+  .arrow:hover { background:rgba(0,0,0,0.6); }
+  .arrow-left { left:10px; } .arrow-right { right:10px; }
+
+  /* Categories */
+  .categories-eco { display:flex; justify-content:center; flex-wrap:wrap; gap:20px; margin-top:30px; }
+  .leaf { background:#40916c; color:white; padding:20px; width:150px; border-radius:50%; font-weight:bold; cursor:pointer; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:0.3s; text-align:center; }
+  .leaf:hover { background:#2d6a4f; transform:scale(1.1) rotate(-2deg); }
+
+  /* About Us */
+  .about-us { background:#1b4332; color:white; padding:40px 20px; margin-top:40px; text-align:center; }
+  .about-us h2 { font-size:28px; margin-bottom:15px; }
+  .about-us p { max-width:800px; margin:10px auto; font-size:16px; line-height:1.6; }
+  .about-us strong { color:#d4fc79; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left" onclick="window.location.href='home.html'">
+    <img src="logo.jpeg" alt="EcoFinds Logo" class="logo">
+    <h1>EcoFinds Shop</h1>
+  </div>
+  <button class="cart-btn" onclick="window.location.href='cart.html'">
+    Cart (<span id="cart-count">0</span>)
+  </button>
+</div>
+
+<div id="app">
+  <!-- Home -->
+  <div id="home" class="hero-eco">
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search eco-friendly products...">
+      <button onclick="searchProducts()">Search</button>
+    </div>
+
+    <!-- Slider with Trending -->
+    <div class="slider">
+      <div class="slides">
+        <div class="slide">
+          <img src="Appliances.jpg" alt="Appliances">
+          <div class="slide-title">Eco Appliances</div>
+        </div>
+        <div class="slide">
+          <img src="Mug.jpg" alt="Mug">
+          <div class="slide-title">Reusable Mug</div>
+        </div>
+        <div class="slide">
+          <img src="Bag1.jpg" alt="Bag">
+          <div class="slide-title">Eco Bag</div>
+        </div>
+        <div class="slide">
+          <img src="Coirbrush.jpg" alt="Coir Brush">
+          <div class="slide-title">Natural Coir Brush</div>
+        </div>
+      </div>
+      <div class="arrow arrow-left">&#10094;</div>
+      <div class="arrow arrow-right">&#10095;</div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories-eco">
+      <a href="clothes.html"><div class="leaf">Clothes</div></a>
+      <a href="furniture.html"><div class="leaf">Furniture</div></a>
+      <a href="Daily.html"><div class="leaf">Daily Items</div></a>
+      <a href="toys.html"><div class="leaf">Toys</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- About Us Section -->
+<div class="about-us">
+  <h2>About Us</h2>
+  <p><strong>EcoFinds</strong> is your one-stop destination for eco-friendly products.  
+  Our mission is to make sustainable living simple, affordable, and accessible for everyone.</p>
+  <p>From <strong>clothes</strong> to <strong>daily essentials</strong>, every product we showcase is carefully chosen to reduce environmental impact and promote a greener future.</p>
+  <p>Join us on our journey to build a community that cares for the <strong>planet</strong> as much as we do. </p>
+</div>
+
+<script src="cart.js"></script>
+<script>
+  // ✅ Search with redirects
+  function searchProducts() {
+    const query = document.getElementById('search-input').value.trim().toLowerCase();
+
+    // Keywords → pages
+    const searchMap = {
+      "shirt": "clothes.html",
+      "pants": "clothes.html",
+      "clothes": "clothes.html",
+      "furniture": "furniture.html",
+      "chair": "furniture.html",
+      "table": "furniture.html",
+      "daily": "Daily.html",
+      "mug": "Daily.html",
+      "bag": "Daily.html",
+      "toys": "toys.html",
+      "car": "toys.html",
+      "toy car": "toys.html"
+    };
+
+    for (let keyword in searchMap) {
+      if (query.includes(keyword)) {
+        window.location.href = searchMap[keyword];
+        return;
+      }
+    }
+
+    if (query) {
+      alert("No products found for: " + query);
+    }
+  }
+
+  // ✅ Slider logic
+  const slides = document.querySelector('.slides');
+  const totalSlides = slides.children.length;
+  let index = 0;
+
+  const nextSlide = () => {
+    index = (index + 1) % totalSlides;
+    slides.style.transform = `translateX(-${index*100}%)`;
+  }
+  const prevSlide = () => {
+    index = (index - 1 + totalSlides) % totalSlides;
+    slides.style.transform = `translateX(-${index*100}%)`;
+  }
+
+  document.querySelector('.arrow-right').addEventListener('click',nextSlide);
+  document.querySelector('.arrow-left').addEventListener('click',prevSlide);
+  setInterval(nextSlide,4000);
+</script>
+
+</body>
+</html>
